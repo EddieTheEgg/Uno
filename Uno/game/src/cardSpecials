@@ -1,0 +1,17 @@
+public class cardSpecials{
+
+    private String color;
+    private String plusFour;
+    private String wildCard;
+
+
+    //Wildcard 
+ 
+
+    //+4
+    public cardSpecials(int g){  
+        wildCard = wildcard;
+        color = "black";
+    }
+
+}
