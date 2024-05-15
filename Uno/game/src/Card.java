@@ -46,6 +46,34 @@ public class Card {
 
 
 
+    //Get Methods
+
+    public String getCardType(){
+        return type;
+    }
+
+    public String getColor(){
+        return color;
+    }
+
+    public int getCardValue(){
+        return cardValue;
+    }
+
+    //Set Methods
+
+    //This is for Wild and +4 cards
+    public void setCardColor(String userColorChoice){
+        color = userColorChoice;
+    }
+
+    //Special Card Effects
+
+    
+
+    
+
+    
 
      
 
