@@ -17,22 +17,26 @@ public class Deck {
             if (i!=4){ //first add the power cards
                 deck.add(new Card("plusTwo", colors[i], true));
                 deck.add(new Card("reverse", colors[i], "reverseID"));
+                deck.add(new Card("skip", colors[i], "s"));
                 
                 if (t ==1){ //on the second loop, add normal cards 1-9
                     for (int j = 1; j<=9; j++){
                         deck.add(new Card("Normal", colors[i], j));
                     }
                 }
-                for (int j = 0; j<=9; j++){ //on the first loop, add normal cards 0-9
-                    deck.add(new Card("Normal", colors[i], j));
-                }
+                else{
+                    for (int j = 0; j<=9; j++){ //on the first loop, add normal cards 0-9
+                        deck.add(new Card("Normal", colors[i], j));
+                    }
+                } 
             }
-            else{ //the super duper cards
+            else if (i == 4 && t == 1){ //the super duper cards
                 for (int k = 0; k<4; k++){
                     deck.add(new Card("wild", "wildID"));
                     deck.add(new Card("plusFour"));
                 }
-            }        
+            } 
+          
         }
     }
         return deck.size();

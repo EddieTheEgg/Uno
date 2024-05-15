@@ -26,6 +26,12 @@ public class Card {
         this.color = color;
     }
 
+    //Skip Card
+    public Card (String skip, String color, char unique){
+        type = skip;
+        this.color = color;
+    }
+
     //Wild Card
     public Card (String wild, String unique){
         type = wild;
