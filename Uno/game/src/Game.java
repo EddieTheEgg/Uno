@@ -4,7 +4,7 @@ import java.util.*;
 public class Game { //Where the main game happens 
     static Scanner reader = new Scanner(System.in);
     public static void main(String[] args) throws Exception {
-
+       
         Deck game = new Deck();
 
         game.createDeck();
@@ -36,18 +36,43 @@ public class Game { //Where the main game happens
                     break;
             }
         }
-    
-    }
 
-    public static void startGame(){
+        ArrayList<Player> playerList = startGame();
+
+
+        //Adding the cards to the players
+        for (int i = 0; i<playerList.size(); i++){
+            playerList.get(i).setPlayerCards(deck);
+            }
+        }
+
+        //Need to test if the cards are distirbuted correctly
+
+
     //Precondition: Assuming player does not put in more than 3 CPU players
-    System.out.println("How many computer players would you like? Max: 3");
-    int cpuCount = reader.nextInt();
+    public static ArrayList<Player> startGame(){
+        System.out.println("How many computer players would you like? Max: 3");
+        int cpuCount = reader.nextInt();
 
-    }
-
-
-    public static void createPlayers(){
+        System.out.println("What is your name?");
+        String playerName = reader.next();
         
+        return createPlayers(cpuCount, playerName);
     }
+
+    public static ArrayList<Player> createPlayers(int cpuCount, String playerName){
+        ArrayList<Player> playerList = new ArrayList<Player>();
+        
+        playerList.add(new Player(playerName, true));
+        
+        for (int i = 1;i < cpuCount+1; i++){
+            playerList.add(new Player("Bot" + i, false));
+        }
+    
+        return playerList;
+    }
+
+    
+
+
 }
