@@ -36,6 +36,10 @@ public void setPlayerCards(ArrayList<Card> deck){
     }
 }
 
+public ArrayList<Card> getPlayerCards(){
+    return playerCards;
+}
+
 
 
 

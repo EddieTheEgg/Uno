@@ -48,7 +48,7 @@ public class Deck { //Where the deck is created and accessed
         Collections.shuffle(deck);
     }
 
-    //This will give access to other classes to get the deck
+    //Access the Deck
     public ArrayList<Card> getDeck() {
         return deck;
     }
