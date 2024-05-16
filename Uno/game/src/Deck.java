@@ -57,7 +57,13 @@ public class Deck { //Where the deck is created and accessed
     public int currentDeckSize(){
         return deck.size();
     }
-  
+    
+    //Draw Card 
+    public void drawCard(Player activePlayer){
+
+    }
+
+
    
 
 

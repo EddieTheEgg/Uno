@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Card {
     
     private String type;
@@ -61,6 +63,13 @@ public class Card {
     }
 
     //Set Methods
+
+
+    //Card Effects
+
+    //Normal Card when called moves to next person.
+    
+
 
     //This is for Wild and +4 cards
     public void setCardColor(String userColorChoice){

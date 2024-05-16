@@ -4,55 +4,47 @@ import java.util.*;
 public class Game { //Where the main game happens 
     static Scanner reader = new Scanner(System.in);
     public static void main(String[] args) throws Exception {
-       
-        //Creating Players
-        ArrayList<Player> playerList = startGame();
         
+        //Creating Players
+        int activeIndex = 0;
+        ArrayList<Player> playerList = startGame();
+        //Order is always 0->1->2->3
+    
         //Deck Creation
         Deck game = new Deck();
 
         game.createDeck();
         game.shuffleDeck();
 
-        //Main Deck
+        //Main Deck of cards to draw from
         ArrayList<Card> deck = game.getDeck(); //deck is the card deck
 
-        //Main Card pile
+        //Distribute the deck of cards to players
+        distributeCards(playerList, deck);
+
+        //Main Card Pile
         ArrayList<Card> cardPile = new ArrayList<Card>();  //cardPile is the current card pile being played on
         startCard(deck, cardPile); //adds the starting card to the pile
        
-         //Debug Test
-         System.out.println("This is the current card in the pile: "); 
-         getCurrentCard(cardPile, 0);
+        //Display Current Card and User Cards
+
+        System.out.println("Welcome to UNO " + playerList.get(0).getPlayerName() + "!");
+        System.out.println("");
+
+        System.out.println("Current Card On Top of the Pile: "); 
+        getCurrentCard(cardPile, 0);
+        System.out.println(" ");
+        System.out.println(" ");
+        
+        displayUserCards(playerList.get(0).getPlayerCards());
+
+        //Simulate one round
 
 
-        /*
-         * 
-         
-        //Debugging Checkpoint to check if cards are printin correctly
-        for (int i = 0; i< deck.size(); i++){
-            switch (deck.get(i).getCardType()){
-                case "Normal":
-                    System.out.println(deck.get(i).getColor() + " " + deck.get(i).getCardValue());
-                    break;
-                case "Wild":
-                    System.out.println(deck.get(i).getCardType());
-                    break;
-                case "Wild +4":
-                    System.out.println(deck.get(i).getCardType());
-                    break;
-                case "Normal +2":
-                    System.out.println(deck.get(i).getColor() + " +2");
-                    break;
-                case "Reverse":
-                    System.out.println(deck.get(i).getColor() + " Reverse");
-                    break;
-                case "Skip":
-                    System.out.println(deck.get(i).getColor() + " Skip");
-                    break;
-            }
-        }
-        */
+        
+
+
+     
        
         
     }
@@ -103,29 +95,93 @@ public class Game { //Where the main game happens
         }
     }
 
+    //goes to the next player
+    public static int nextNormalTurn(ArrayList<Player> playerList, int activeIndex){
+        activeIndex++;
+        if(activeIndex == playerList.size()){
+            activeIndex = 0;
+            return activeIndex;
+        }
+        else{
+            return activeIndex++;
+        }
+    }
+
+    //Function:Prints out ONLY the player's cards when called.
+    public static void displayUserCards(ArrayList<Card> playerCards){
+       System.out.println("This is your current cards: ");
+        if (playerCards.size() == 0 ){
+        System.out.println("YOU WON!"); //Might make a function with uno here
+       }
+       else{
+        for(int i = 0; i<playerCards.size(); i++){
+            getCurrentCard(playerCards, i);
+            System.out.print(" | ");
+        }
+       }
+    }
+
+    //User or Robot wil use this to place a card. Depending on the card, this will call card class methods to affect gameplay
+    //Also the precondition is that the userCards passed in is from an active player
+    public static void placeCard(ArrayList<Player> playerList, ArrayList<Card> cardPile, int activeIndex){
+        if (playerList.get(activeIndex).isPlayer() == false){ //Robot player
+            //Place the first valid card down. (Not gonna be some AI bot)
+        }
+
+
+    }
 
     public static void getCurrentCard(ArrayList<Card> cards, int index){
         switch (cards.get(index).getCardType()){
             case "Normal":
-                System.out.println(cards.get(index).getColor() + " " + cards.get(index).getCardValue());
+                System.out.print(cards.get(index).getColor() + " " + cards.get(index).getCardValue());
                 break;
             case "Wild":
-                System.out.println(cards.get(index).getCardType());
+                System.out.print(cards.get(index).getCardType());
                 break;
             case "Wild +4":
-                System.out.println(cards.get(index).getCardType());
+                System.out.print(cards.get(index).getCardType());
                 break;
             case "Normal +2":
-                System.out.println(cards.get(index).getColor() + " +2");
+                System.out.print(cards.get(index).getColor() + " +2");
                 break;
             case "Reverse":
-                System.out.println(cards.get(index).getColor() + " Reverse");
+                System.out.print(cards.get(index).getColor() + " Reverse");
                 break;
             case "Skip":
-                System.out.println(cards.get(index).getColor() + " Skip");
+                System.out.print(cards.get(index).getColor() + " Skip");
                 break;
         }
     }
 
 
 }
+
+
+   /*
+         * 
+         
+        //Debugging Checkpoint to check if cards are printin correctly
+        for (int i = 0; i< deck.size(); i++){
+            switch (deck.get(i).getCardType()){
+                case "Normal":
+                    System.out.println(deck.get(i).getColor() + " " + deck.get(i).getCardValue());
+                    break;
+                case "Wild":
+                    System.out.println(deck.get(i).getCardType());
+                    break;
+                case "Wild +4":
+                    System.out.println(deck.get(i).getCardType());
+                    break;
+                case "Normal +2":
+                    System.out.println(deck.get(i).getColor() + " +2");
+                    break;
+                case "Reverse":
+                    System.out.println(deck.get(i).getColor() + " Reverse");
+                    break;
+                case "Skip":
+                    System.out.println(deck.get(i).getColor() + " Skip");
+                    break;
+            }
+        }
+        */
