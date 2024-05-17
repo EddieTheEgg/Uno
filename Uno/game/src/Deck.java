@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.sql.Array;
+import java.util.*;
  
 public class Deck { //Where the deck is created and accessed
     
@@ -58,11 +60,14 @@ public class Deck { //Where the deck is created and accessed
         return deck.size();
     }
     
-    //Draw Card 
+    //Draw Card  (Might not need)
     public void drawCard(Player activePlayer){
 
     }
-
+    //Get the Deck Colors
+    public String[] getColors() {
+        return colors;
+    }
 
    
 

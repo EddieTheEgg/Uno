@@ -12,6 +12,7 @@ public class Game { //Where the main game happens
     
         //Deck Creation
         Deck game = new Deck();
+        String [] possibleColors = game.getColors();
 
         game.createDeck();
         game.shuffleDeck();
@@ -95,6 +96,10 @@ public class Game { //Where the main game happens
         }
     }
 
+    public static void addCard(ArrayList<Card> cardPile, Card card){
+        cardPile.add(0, card);
+    }
+
     //goes to the next player
     public static int nextNormalTurn(ArrayList<Player> playerList, int activeIndex){
         activeIndex++;
@@ -126,12 +131,21 @@ public class Game { //Where the main game happens
     //Precondition is that we know if the player placing is a bot or player
     //We have the card list of the active person
     //We have the card pile currenly in game
-    public static void placeCard(boolean isPlayer, ArrayList<Card> userCards, ArrayList<Card> cardPile){
+    public static void placeCard(boolean isPlayer, ArrayList<Card> userCards, ArrayList<Card> cardPile, String [] possibleColors, ArrayList<Player> playerList, int activeIndex){
+    int currentCardValue = cardPile.get(0).getCardValue();
+    String currentCardColor = cardPile.get(0).getColor();
+    String currentCardType = cardPile.get(0).getCardType();
+    
         if (isPlayer == false){ //Robot player
             for(int i = 0; i<userCards.size(); i++){
-                if (userCards.get(i).getCardType().equals("Normal")){
-                    //we might need global variables to limit the need to check every condition
-                    
+                if (userCards.get(i).getCardType().equals("Wild")){
+                    userCards.get(i).wildCardRobot(possibleColors); //sets wild card to a random color
+                    addCard(cardPile, userCards.get(i));  
+                    nextNormalTurn(playerList, activeIndex);
+                }
+                else if (userCards.get(i).getCardType().equals("Wild +4")){
+                    int colorRandom = (int)(Math.random() * 4);
+                    userCards.get(i).setRobotCardColor(possibleColors[colorRandom]);
                 }
             }
             //Place the first valid card down. (Not gonna be some AI bot)

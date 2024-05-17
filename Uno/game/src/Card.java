@@ -64,6 +64,7 @@ public class Card {
 
     //Set Methods
 
+    
 
     //Card Effects
 
@@ -75,9 +76,21 @@ public class Card {
     public void setCardColor(String userColorChoice){
         color = userColorChoice;
     }
+   
+    public void setRobotCardColor(String robotColorChoice){
+        color = robotColorChoice;
+    }
 
     //Special Card Effects
 
+    public void wildCardRobot (String [] possibleColors){
+        int colorRandom = (int)(Math.random() * 4);
+        setRobotCardColor(possibleColors[colorRandom]);
+    }
+
+    public void wildCardUser (String [] possibleColors){
+        
+    }
     
 
     
