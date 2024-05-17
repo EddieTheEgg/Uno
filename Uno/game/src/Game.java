@@ -123,13 +123,22 @@ public class Game { //Where the main game happens
 
     //User or Robot wil use this to place a card. Depending on the card, this will call card class methods to affect gameplay
     //Also the precondition is that the userCards passed in is from an active player
-    public static void placeCard(ArrayList<Player> playerList, ArrayList<Card> cardPile, int activeIndex){
-        if (playerList.get(activeIndex).isPlayer() == false){ //Robot player
+    //Precondition is that we know if the player placing is a bot or player
+    //We have the card list of the active person
+    //We have the card pile currenly in game
+    public static void placeCard(boolean isPlayer, ArrayList<Card> userCards, ArrayList<Card> cardPile){
+        if (isPlayer == false){ //Robot player
+            for(int i = 0; i<userCards.size(); i++){
+                if (userCards.get(i).getCardType().equals("Normal")){
+                    //we might need global variables to limit the need to check every condition
+                    
+                }
+            }
             //Place the first valid card down. (Not gonna be some AI bot)
         }
-
-
     }
+
+
 
     public static void getCurrentCard(ArrayList<Card> cards, int index){
         switch (cards.get(index).getCardType()){
