@@ -39,6 +39,8 @@ public class Game { //Where the main game happens
         
         placeCardHuman(playerList.get(activeIndex).getPlayerCards(), cardPile, possibleColors, activeIndex);
 
+        displayUserCards(playerList.get(0).getPlayerCards());
+        
         //Simulate one round
 
 
@@ -58,9 +60,12 @@ public class Game { //Where the main game happens
     public static ArrayList<Player> startGame(){
         System.out.println("How many computer players would you like? Max: 3");
         int cpuCount = reader.nextInt();
+        reader.nextLine(); //This consumes leftover newline from nextInt. 
+        //When we enter a number for nextInt, the "enter" is left as a leftover buffer.
+        //nextLine will terminate this enter buffer by reading it as an empty string.
 
         System.out.println("What is your name?");
-        String playerName = reader.next();
+        String playerName = reader.nextLine();
         
         return createPlayers(cpuCount, playerName);
     }
@@ -137,10 +142,15 @@ public class Game { //Where the main game happens
         displayUserCards(userCards);
         System.out.println("");
         System.out.println("What card would you like to place down? Make sure your choice matches the card exact name!");
-        String response = reader.next();
+        String response = reader.nextLine();
+        String [] input = response.split(" ");
+
+    
+        //Checks User Card choice Validity
         for(int i = 0; i< userCards.size(); i++){
-            //Place normal card down
-            if (response.equals(userCards.get(i).getColor() + " " + userCards.get(i).getCardValue())){
+            //Place Normal card down
+            if (input[0].equals(userCards.get(i).getColor()) && input[1].equals(String.valueOf(userCards.get(i).getCardValue()))){
+                System.out.println("Test Works");
                 cardPile.add(0,userCards.get(i));
                 userCards.remove(i);
             }
@@ -165,7 +175,11 @@ public class Game { //Where the main game happens
     }
 
     //A function that will return true if card can be placed on the current cardpile or false if not.
-    public static boolean isCardValid(){
+    public static boolean isCardValid(String card, ArrayList<Card> cardPile){
+        if (card.equals(cardPile.get(0).getColor())){
+            
+        }
+        
         return true;
     }
 
