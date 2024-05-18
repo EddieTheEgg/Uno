@@ -37,7 +37,7 @@ public class Game { //Where the main game happens
         System.out.println(" ");
         System.out.println(" ");
         
-        displayUserCards(playerList.get(0).getPlayerCards());
+        placeCardHuman(playerList.get(activeIndex).getPlayerCards(), cardPile, possibleColors, activeIndex);
 
         //Simulate one round
 
@@ -131,17 +131,50 @@ public class Game { //Where the main game happens
     //Precondition is that we know if the player placing is a bot or player
     //We have the card list of the active person
     //We have the card pile currenly in game
-    public static void placeCard(boolean isPlayer, ArrayList<Card> userCards, ArrayList<Card> cardPile, String [] possibleColors, ArrayList<Player> playerList, int activeIndex){
+
+    //precondition: we have the user cards, and this is a human.
+    public static void placeCardHuman (ArrayList<Card>userCards, ArrayList<Card> cardPile, String [] possibleColors, int activeIndex){
+        displayUserCards(userCards);
+        System.out.println("");
+        System.out.println("What card would you like to place down? Make sure your choice matches the card exact name!");
+        String response = reader.next();
+        for(int i = 0; i< userCards.size(); i++){
+            //Place normal card down
+            if (response.equals(userCards.get(i).getColor() + " " + userCards.get(i).getCardValue())){
+                cardPile.add(0,userCards.get(i));
+                userCards.remove(i);
+            }
+            //Place wild or wild+4 card down
+            else if (response.equals(userCards.get(i).getCardType())){
+                if(response.equals("Wild")){
+                    System.out.println("What color would you like to choose? Red, Yellow, Green, Blue");
+                    String colorResponse = reader.next();
+                    userCards.get(i).setCardColor(colorResponse);
+                    cardPile.add(0,userCards.get(i));
+                }
+
+
+            }
+            //Place +2, reverse, or skip card down
+            else if (response.equals(userCards.get(i).getColor() + " " + userCards.get(i).getCardType())){
+                
+            }
+        }
+
+
+    }
+
+    public static void placeCardRobot( ArrayList<Card> userCards, ArrayList<Card> cardPile, String [] possibleColors, ArrayList<Player> playerList, int activeIndex){
     int currentCardValue = cardPile.get(0).getCardValue();
     String currentCardColor = cardPile.get(0).getColor();
     String currentCardType = cardPile.get(0).getCardType();
     
-        if (isPlayer == false){ //Robot player
-            for(int i = 0; i<userCards.size(); i++){
+        for(int i = 0; i<userCards.size(); i++){
                 if (userCards.get(i).getCardType().equals("Wild")){
                     userCards.get(i).wildCardRobot(possibleColors); //sets wild card to a random color
                     addCard(cardPile, userCards.get(i));  
                     nextNormalTurn(playerList, activeIndex);
+                    break;
                 }
                 else if (userCards.get(i).getCardType().equals("Wild +4")){
                     int colorRandom = (int)(Math.random() * 4);
@@ -150,7 +183,6 @@ public class Game { //Where the main game happens
             }
             //Place the first valid card down. (Not gonna be some AI bot)
         }
-    }
 
 
 
