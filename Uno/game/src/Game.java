@@ -40,7 +40,12 @@ public class Game { //Where the main game happens
         placeCardHuman(playerList.get(activeIndex).getPlayerCards(), cardPile, possibleColors, activeIndex);
 
         displayUserCards(playerList.get(0).getPlayerCards());
-        
+
+        System.out.println("");
+        System.out.println("Current Card in Pile: ");
+
+        getCurrentCard(cardPile, 0);
+
         //Simulate one round
 
 
@@ -113,7 +118,7 @@ public class Game { //Where the main game happens
             return activeIndex;
         }
         else{
-            return activeIndex++;
+            return activeIndex;
         }
     }
 
@@ -140,7 +145,8 @@ public class Game { //Where the main game happens
     //precondition: we have the user cards, and this is a human.
     public static void placeCardHuman (ArrayList<Card>userCards, ArrayList<Card> cardPile, String [] possibleColors, int activeIndex){
         displayUserCards(userCards);
-        System.out.println("");
+        System.out.println(" ");
+        System.out.println(" ");
         System.out.println("What card would you like to place down? Make sure your choice matches the card exact name!");
         String response = reader.nextLine();
         String [] input = response.split(" ");
@@ -149,21 +155,20 @@ public class Game { //Where the main game happens
         //Checks User Card choice Validity
         for(int i = 0; i< userCards.size(); i++){
             //Place Normal card down
-            if (input[0].equals(userCards.get(i).getColor()) && input[1].equals(String.valueOf(userCards.get(i).getCardValue()))){
-                System.out.println("Test Works");
+            if (input[0].equals(userCards.get(i).getColor()) && input[1].equals(String.valueOf(userCards.get(i).getCardValue())) && isCardValidNormal(input, cardPile)){
+                System.out.println(" ");
+                System.out.println("You have successfully placed down: " + response);
                 cardPile.add(0,userCards.get(i));
                 userCards.remove(i);
             }
             //Place wild or wild+4 card down
-            else if (response.equals(userCards.get(i).getCardType())){
-                if(response.equals("Wild")){
-                    System.out.println("What color would you like to choose? Red, Yellow, Green, Blue");
-                    String colorResponse = reader.next();
-                    userCards.get(i).setCardColor(colorResponse);
-                    cardPile.add(0,userCards.get(i));
-                }
-
-
+            else if (response.equals(userCards.get(i).getCardType()) && response.equals("Wild")){
+                userCards.get(i).wildCardUser(possibleColors);
+                cardPile.add(0,userCards.get(i));
+                userCards.remove(i);
+            }
+            else if (response.equals("Wild +4")){
+                
             }
             //Place +2, reverse, or skip card down
             else if (response.equals(userCards.get(i).getColor() + " " + userCards.get(i).getCardType())){
@@ -175,12 +180,11 @@ public class Game { //Where the main game happens
     }
 
     //A function that will return true if card can be placed on the current cardpile or false if not.
-    public static boolean isCardValid(String card, ArrayList<Card> cardPile){
-        if (card.equals(cardPile.get(0).getColor())){
-            
+    public static boolean isCardValidNormal(String [] input, ArrayList<Card> cardPile){
+        if (input[0].equals(cardPile.get(0).getColor()) || input[1].equals(String.valueOf(cardPile.get(0).getCardValue()))){
+            return true;
         }
-        
-        return true;
+        return false;
     }
 
     public static void placeCardRobot( ArrayList<Card> userCards, ArrayList<Card> cardPile, String [] possibleColors, ArrayList<Player> playerList, int activeIndex){
@@ -211,10 +215,10 @@ public class Game { //Where the main game happens
                 System.out.print(cards.get(index).getColor() + " " + cards.get(index).getCardValue());
                 break;
             case "Wild":
-                System.out.print(cards.get(index).getCardType());
+                System.out.print(cards.get(index).getCardType() + cards.get(index).getColor());
                 break;
             case "Wild +4":
-                System.out.print(cards.get(index).getCardType());
+                System.out.print(cards.get(index).getCardType() + cards.get(index).getColor());
                 break;
             case "Normal +2":
                 System.out.print(cards.get(index).getColor() + " +2");

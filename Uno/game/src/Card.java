@@ -1,7 +1,7 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public class Card {
-    
+    Scanner reader = new Scanner(System.in);
     private String type;
     private String color;
     private int cardValue;
@@ -88,8 +88,13 @@ public class Card {
         setRobotCardColor(possibleColors[colorRandom]);
     }
 
+    //Sets the color of the card from Black to user choice
     public void wildCardUser (String [] possibleColors){
-        
+        //Assuming the user inputs the correct color. Maybe do a check if statement if repsonse valid later.
+        System.out.println("What color would you like to choose? Red, Yellow, Green, or Blue");
+        String colorResponse = reader.nextLine();
+        color = colorResponse;
+
     }
     
 
