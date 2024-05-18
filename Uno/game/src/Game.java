@@ -164,6 +164,11 @@ public class Game { //Where the main game happens
 
     }
 
+    //A function that will return true if card can be placed on the current cardpile or false if not.
+    public static boolean isCardValid(){
+        return true;
+    }
+
     public static void placeCardRobot( ArrayList<Card> userCards, ArrayList<Card> cardPile, String [] possibleColors, ArrayList<Player> playerList, int activeIndex){
     int currentCardValue = cardPile.get(0).getCardValue();
     String currentCardColor = cardPile.get(0).getColor();
