@@ -40,6 +40,7 @@ public class Game { //Where the main game happens
         activeIndex = placeCardHuman(playerList.get(activeIndex).getPlayerCards(), deck, cardPile, playerList, possibleColors, activeIndex);
 
         displayUserCards(playerList.get(0).getPlayerCards());
+       
 
         System.out.println("");
         System.out.println("Current Card in Pile: ");
@@ -48,6 +49,8 @@ public class Game { //Where the main game happens
 
         //Simulate one round
 
+        System.out.println("");
+        displayUserCards(playerList.get(1).getPlayerCards());
 
         
 
@@ -173,7 +176,7 @@ public class Game { //Where the main game happens
                 userCards.remove(i);
                 activeIndex = nextTurn(playerList, activeIndex, 1);
             }
-            else if (response.equals("Wild +4")){
+            else if (response.equals("Wild +4 Black")){
                 System.out.println(" ");
                 System.out.println("You have successfully placed down: " + response);
                 userCards.get(i).wildCardUser(possibleColors);

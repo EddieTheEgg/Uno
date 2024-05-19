@@ -37,13 +37,13 @@ public class Card {
     //Wild Card
     public Card (String wild, String unique){
         type = wild;
-        color = "black";
+        color = "Black";
     }
 
     //Wild +4 Card
     public Card (String plusFour){
         type = plusFour;
-        color = "black";
+        color = "Black";
     }
 
 
