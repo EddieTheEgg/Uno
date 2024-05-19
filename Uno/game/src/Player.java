@@ -40,6 +40,13 @@ public ArrayList<Card> getPlayerCards(){
     return playerCards;
 }
 
+public void addPlayerCards(ArrayList<Card> deck, int amount){
+    for ( int i = 0; i< amount; i++){
+        playerCards.add(deck.get(0));
+        deck.remove(0);
+    }
+}
+
 
 
 

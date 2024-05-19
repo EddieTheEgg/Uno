@@ -49,7 +49,9 @@ public class Game { //Where the main game happens
 
         //Simulate one round
 
-        System.out.println("");
+        System.out.println(" ");
+        System.out.println(" ");
+        System.out.println("Testing...");
         displayUserCards(playerList.get(1).getPlayerCards());
 
         
@@ -116,7 +118,7 @@ public class Game { //Where the main game happens
     //goes to the next player
     public static int nextTurn(ArrayList<Player> playerList, int activeIndex, int incrementAmount){
         activeIndex+= incrementAmount;
-        if(activeIndex == playerList.size()){
+        if(activeIndex >= playerList.size()){
             activeIndex = 0;
             return activeIndex;
         }
@@ -166,17 +168,19 @@ public class Game { //Where the main game happens
                 cardPile.add(0,userCards.get(i));
                 userCards.remove(i);
                 activeIndex = nextTurn(playerList, activeIndex, 1);
+                return activeIndex;
             }
             //Place wild or wild+4 card down
-            else if (response.equals(userCards.get(i).getCardType() + "Black") && response.equals("Wild")){
+            else if (input[0].equals(userCards.get(i).getCardType()) && input[1].equals(userCards.get(i).getColor())){
                 System.out.println(" ");
                 System.out.println("You have successfully placed down: " + response);
                 userCards.get(i).wildCardUser(possibleColors);
                 cardPile.add(0,userCards.get(i));
                 userCards.remove(i);
                 activeIndex = nextTurn(playerList, activeIndex, 1);
+                return activeIndex;
             }
-            else if (response.equals("Wild +4 Black")){
+            else if (response.equals(userCards.get(i).getCardType() + " " + userCards.get(i).getColor())){
                 System.out.println(" ");
                 System.out.println("You have successfully placed down: " + response);
                 userCards.get(i).wildCardUser(possibleColors);
@@ -185,7 +189,7 @@ public class Game { //Where the main game happens
                 cardPile.add(0, userCards.get(i));
                 userCards.remove(i);
                 activeIndex = nextTurn(playerList, activeIndex, 2);
-                
+                return activeIndex;
             }
             //Place +2, reverse, or skip card down
             else if (response.equals(userCards.get(i).getColor() + " " + userCards.get(i).getCardType())){
