@@ -161,40 +161,33 @@ public class Game { //Where the main game happens
     
         //Checks User Card choice Validity
         for(int i = 0; i< userCards.size(); i++){
-            //Place Normal card down
+            //Place Normal Card
             if (input[0].equals(userCards.get(i).getColor()) && input[1].equals(String.valueOf(userCards.get(i).getCardValue())) && isCardValidNormal(input, cardPile)){
-                System.out.println(" ");
-                System.out.println("You have successfully placed down: " + response);
-                cardPile.add(0,userCards.get(i));
-                userCards.remove(i);
-                activeIndex = nextTurn(playerList, activeIndex, 1);
-                return activeIndex;
+                return placeCard(userCards, cardPile, playerList, activeIndex, userCards.get(i), 1, response);
             }
-            //Place wild or wild+4 card down
+            //Place Wild Card
             else if (input[0].equals(userCards.get(i).getCardType()) && input[1].equals(userCards.get(i).getColor())){
-                System.out.println(" ");
-                System.out.println("You have successfully placed down: " + response);
                 userCards.get(i).wildCardUser(possibleColors);
-                cardPile.add(0,userCards.get(i));
-                userCards.remove(i);
-                activeIndex = nextTurn(playerList, activeIndex, 1);
-                return activeIndex;
+                return placeCard(userCards, cardPile, playerList, activeIndex, userCards.get(i), 1, response);
             }
+            //Place Wild +4 Card
             else if (response.equals(userCards.get(i).getCardType() + " " + userCards.get(i).getColor())){
-                System.out.println(" ");
-                System.out.println("You have successfully placed down: " + response);
                 userCards.get(i).wildCardUser(possibleColors);
                 int victimIndex = nextTurn(playerList, activeIndex, 1);
                 drawCard(deck, playerList.get(victimIndex).getPlayerCards(), 4);
-                cardPile.add(0, userCards.get(i));
-                userCards.remove(i);
-                activeIndex = nextTurn(playerList, activeIndex, 2);
-                return activeIndex;
+                return placeCard(userCards, cardPile, playerList, activeIndex, userCards.get(i), 2, response);
             }
-            //Place +2, reverse, or skip card down
-            else if (response.equals(userCards.get(i).getColor() + " " + userCards.get(i).getCardType())){
-                
+            //Place +2 Card
+            else if (response.equals(userCards.get(i).getColor() + " +2") && isCardValidPlusTwo(input, cardPile)){
+                int victimIndex = nextTurn(playerList, activeIndex, 1);
+                drawCard(deck, playerList.get(victimIndex).getPlayerCards(), 2);
+                return placeCard(userCards, cardPile, playerList, activeIndex, userCards.get(i), 2, response);
             }
+            //Place Skip Card 
+    
+
+            //Place Reverse Card
+
         }
         return activeIndex;
 
@@ -207,6 +200,22 @@ public class Game { //Where the main game happens
         }
         return false;
     }
+
+    public static boolean isCardValidPlusTwo (String [] input, ArrayList<Card> cardPile){
+        if (input[0].equals(cardPile.get(0).getColor()) || input[1].equals(String.valueOf(cardPile.get(0).getCardValue()))){
+            return true;
+        }
+        return false;
+    }
+   
+    public static int placeCard(ArrayList<Card> userCards, ArrayList<Card> cardPile, ArrayList<Player> playerList, int activeIndex, Card card, int turnIncrement, String response) {
+        System.out.println(" ");
+        System.out.println("You have successfully placed down: " + response);
+        cardPile.add(0, card);
+        userCards.remove(card);
+        activeIndex = nextTurn(playerList, activeIndex, turnIncrement);
+        return activeIndex;
+}
 
     public static void drawCard(ArrayList<Card> deck, ArrayList<Card> userCards, int drawAmount){
         for(int i = 0 ; i<drawAmount; i++){

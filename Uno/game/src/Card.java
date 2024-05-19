@@ -96,6 +96,11 @@ public class Card {
         color = colorResponse;
 
     }
+
+    //+2 Card Effect
+    public void plusTwoEffect(){
+        
+    }
     
 
     
