@@ -54,6 +54,11 @@ public class Game { //Where the main game happens
         System.out.println("Testing...");
         displayUserCards(playerList.get(1).getPlayerCards());
 
+        System.out.println("");
+        System.out.println("Get New Current Player:" + playerList.get(activeIndex).getPlayerName());
+
+
+
         
 
 
@@ -119,7 +124,7 @@ public class Game { //Where the main game happens
     public static int nextTurn(ArrayList<Player> playerList, int activeIndex, int incrementAmount){
         activeIndex+= incrementAmount;
         if(activeIndex >= playerList.size()){
-            activeIndex = 0;
+            activeIndex = activeIndex - playerList.size();
             return activeIndex;
         }
         else{
