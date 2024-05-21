@@ -36,13 +36,19 @@ public class Game { //Where the main game happens
         getCurrentCard(cardPile, 0);
         System.out.println(" ");
         System.out.println(" ");
+
+        System.out.println("This is the order of the players currently:");
+
+        for (int i = 0; i< playerList.size(); i++){
+            System.out.println(playerList.get(i).getPlayerName());
+        }
         
         activeIndex = placeCardHuman(playerList.get(activeIndex).getPlayerCards(), deck, cardPile, playerList, possibleColors, activeIndex);
 
         displayUserCards(playerList.get(0).getPlayerCards());
        
 
-        System.out.println("");
+        System.out.println(""); 
         System.out.println("Current Card in Pile: ");
 
         getCurrentCard(cardPile, 0);
@@ -57,13 +63,16 @@ public class Game { //Where the main game happens
         System.out.println("");
         System.out.println("Get New Current Player:" + playerList.get(activeIndex).getPlayerName());
 
+        System.out.println("This is the order of the players currently:");
+
+        for (int i = 0; i< playerList.size(); i++){
+            System.out.println(playerList.get(i).getPlayerName());
+        }
 
 
         
 
-
-     
-       
+  
         
     }
 
@@ -183,22 +192,27 @@ public class Game { //Where the main game happens
                 return placeCard(userCards, cardPile, playerList, activeIndex, userCards.get(i), 2, response);
             }
             //Place +2 Card
-            else if (response.equals(userCards.get(i).getColor() + " +2") && isCardValidPlusTwo(input, cardPile)){
+            else if (response.equals(userCards.get(i).getColor() + " +2") && isCardValidNonNormal(input, cardPile)){
                 int victimIndex = nextTurn(playerList, activeIndex, 1);
                 drawCard(deck, playerList.get(victimIndex).getPlayerCards(), 2);
                 return placeCard(userCards, cardPile, playerList, activeIndex, userCards.get(i), 2, response);
             }
             //Place Skip Card 
-    
-
+            else if (response.equals(userCards.get(i).getColor() + " Skip") && isCardValidNonNormal(input, cardPile)){
+                return placeCard(userCards, cardPile, playerList, activeIndex, userCards.get(i), 2, response);
+            }
             //Place Reverse Card
+            else if (response.equals(userCards.get(i).getColor() + " Reverse") && isCardValidNonNormal(input, cardPile)){
+                reverseAtIndex(playerList, activeIndex);
+                return placeCard(userCards, cardPile, playerList, activeIndex, userCards.get(i), 1, response);
+            }
 
         }
         return activeIndex;
 
     }
 
-    //A function that will return true if card can be placed on the current cardpile or false if not.
+    //Functions to check Card Validities
     public static boolean isCardValidNormal(String [] input, ArrayList<Card> cardPile){
         if (input[0].equals(cardPile.get(0).getColor()) || input[1].equals(String.valueOf(cardPile.get(0).getCardValue()))){
             return true;
@@ -206,13 +220,28 @@ public class Game { //Where the main game happens
         return false;
     }
 
-    public static boolean isCardValidPlusTwo (String [] input, ArrayList<Card> cardPile){
-        if (input[0].equals(cardPile.get(0).getColor()) || input[1].equals(String.valueOf(cardPile.get(0).getCardValue()))){
+    public static boolean isCardValidNonNormal (String [] input, ArrayList<Card> cardPile){
+        if (input[0].equals(cardPile.get(0).getColor()) || input[1].equals(String.valueOf(cardPile.get(0).getCardType()))){
             return true;
         }
         return false;
     }
    
+    public static void reverseAtIndex(ArrayList<Player> playerList, int activeIndex) {
+       ArrayList<Player> tempList = new ArrayList<>();
+       for (int i = activeIndex; i>=0; i--){
+           tempList.add(playerList.get(i));
+       }
+       if(tempList.size() != playerList.size()){
+        for (int j = playerList.size() - 1; j > activeIndex; j--){
+            tempList.add(playerList.get(j));
+        }
+       }
+       for (int k = 0; k < tempList.size(); k++) {
+        playerList.set(k, tempList.get(k));
+    }
+    }
+
     public static int placeCard(ArrayList<Card> userCards, ArrayList<Card> cardPile, ArrayList<Player> playerList, int activeIndex, Card card, int turnIncrement, String response) {
         System.out.println(" ");
         System.out.println("You have successfully placed down: " + response);
