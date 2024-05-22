@@ -206,7 +206,19 @@ public class Game { //Where the main game happens
                 reverseAtIndex(playerList, activeIndex);
                 return placeCard(userCards, cardPile, playerList, activeIndex, userCards.get(i), 1, response);
             }
-
+            else{
+                System.out.println("You might've made a typo or your card is invalid");
+                System.out.println("Do you want to draw a card instead? Type Yes or No.");
+                String answer = reader.nextLine();
+                if (answer.equals("Yes")){
+                    System.out.println("Okidoki drawing a card for you...");
+                    drawCard(deck, playerList.get(activeIndex).getPlayerCards(), 1);
+                    return nextTurn(playerList, activeIndex, 1);
+                }
+                else{
+                    placeCardHuman(playerList.get(activeIndex).getPlayerCards(), deck, cardPile, playerList, possibleColors, activeIndex);
+                }
+            }
         }
         return activeIndex;
 
@@ -259,9 +271,9 @@ public class Game { //Where the main game happens
     }
 
     public static void placeCardRobot( ArrayList<Card> userCards, ArrayList<Card> cardPile, String [] possibleColors, ArrayList<Player> playerList, int activeIndex){
-    int currentCardValue = cardPile.get(0).getCardValue();
-    String currentCardColor = cardPile.get(0).getColor();
-    String currentCardType = cardPile.get(0).getCardType();
+        int currentCardValue = cardPile.get(0).getCardValue();
+        String currentCardColor = cardPile.get(0).getColor();
+        String currentCardType = cardPile.get(0).getCardType();
     
         for(int i = 0; i<userCards.size(); i++){
                 if (userCards.get(i).getCardType().equals("Wild")){
