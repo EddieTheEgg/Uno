@@ -85,7 +85,7 @@ public class Card {
 
     public void wildCardRobot (String [] possibleColors){
         int colorRandom = (int)(Math.random() * 4);
-        setRobotCardColor(possibleColors[colorRandom]);
+        color = possibleColors[colorRandom];
     }
 
     //Sets the color of the card from Black to user choice
