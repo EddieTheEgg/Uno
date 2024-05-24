@@ -3,7 +3,6 @@ import java.util.*;
 public class Player {  //Properties and cards in each player
     
     private String playerName;
-    private int wins;
     private boolean isPlayer;
     private ArrayList<Card> playerCards;
     
@@ -13,7 +12,6 @@ public class Player {  //Properties and cards in each player
 public Player (String name, Boolean active){
     playerName = name;
     isPlayer= active;
-    wins = 0;
     playerCards = new ArrayList<Card>();
 }
 
