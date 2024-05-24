@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.sql.Array;
-import java.util.*;
  
 public class Deck { //Where the deck is created and accessed
     
