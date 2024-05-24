@@ -193,7 +193,7 @@ public class Game { //Where the main game happens
             }
         }
         System.out.println("WE HAVE A WINNER!!!!  :D");
-        System.out.println("Congrats " + playerList.get(previousActiveIndex));
+        System.out.println("Congrats " + playerList.get(previousActiveIndex).getPlayerName());
         
     }
 
