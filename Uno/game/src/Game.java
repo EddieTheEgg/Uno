@@ -84,14 +84,23 @@ public class Game { //Where the main game happens
 //-----------------FUNCTIONS------------------
 
 
-    //Precondition: Assuming player does not put in more than 3 CPU players
+    //Precondition: Assuming player does not put in more than 3 CPU players (Old version)
     public static ArrayList<Player> startGame(){
-        System.out.println("How many computer players would you like? Max: 3");
-        int cpuCount = reader.nextInt();
-        reader.nextLine(); //This consumes leftover newline from nextInt. 
-        //When we enter a number for nextInt, the "enter" is left as a leftover buffer.
-        //nextLine will terminate this enter buffer by reading it as an empty string.
-
+        int cpuCount = 0;
+            System.out.println("How many computer players would you like? (Integers only and above 0)");
+            try { //attempts to put whatever user inputs is in here. If errors InputMismatchException, catch block takes the input and wipes it
+                cpuCount = reader.nextInt();
+                reader.nextLine(); // Consume leftover newline
+                if (cpuCount < 1) {
+                    System.out.println("Invalid number. Please enter an integer above 0.");
+                    return startGame();
+                }
+            } 
+            catch (InputMismatchException e) { //e is an object containing error information. This is the same as saying if the error is type InputMismatchEzception, execute this code.
+                System.out.println("Invalid input. Please enter a valid integer above 0.");
+                reader.next(); // Clears the invalid input
+                return startGame();
+            }
         System.out.println("What is your name?");
         String playerName = reader.nextLine();
         
