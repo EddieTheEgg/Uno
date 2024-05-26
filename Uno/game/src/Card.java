@@ -20,30 +20,35 @@ public class Card {
     public Card (String plusTwo, String color, boolean unique){
         type = plusTwo;
         this.color = color;
+        cardValue = 50;
     }
 
     //Reverse Card
     public Card (String reverse, String color, String unique){ //as long as parameters are different, the card is called
         type = reverse;
         this.color = color;
+        cardValue = 20;
     }
 
     //Skip Card
     public Card (String skip, String color, char unique){
         type = skip;
         this.color = color;
+        cardValue = 60;
     }
 
     //Wild Card
     public Card (String wild, String unique){
         type = wild;
         color = "Black";
+        cardValue = 80;
     }
 
     //Wild +4 Card
     public Card (String plusFour){
         type = plusFour;
         color = "Black";
+        cardValue = 90;
     }
 
 

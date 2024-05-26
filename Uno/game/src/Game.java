@@ -159,8 +159,8 @@ public class Game { //Where the main game happens
             System.out.println("");
 
             getPlayerCardCount(playerList);
-            System.out.println("");
-            System.out.println("");
+            System.out.println("\n\n");
+           
 
             System.out.println("------ Information about Current Round: ------");
 
@@ -185,9 +185,8 @@ public class Game { //Where the main game happens
             }
             else{
                 previousActiveIndex = activeIndex;
-                System.out.println("");
                 activeIndex = placeCardRobot(playerList.get(activeIndex).getPlayerCards(),deck, cardPile, playerList, possibleColors, activeIndex);
-                System.out.println("Press enter to continue");
+                System.out.print("Press enter to continue");
                 reader.nextLine();
                 roundCount ++;
             }
@@ -205,7 +204,7 @@ public class Game { //Where the main game happens
                 System.out.println(playerList.get(i).getPlayerName());
             }
             else{
-                System.out.print(playerList.get(i).getPlayerName() + "-> ");
+                System.out.print(playerList.get(i).getPlayerName() + " -> ");
             }
         }
     }
@@ -252,10 +251,20 @@ public class Game { //Where the main game happens
         displayUserCards(userCards);
         System.out.println(" ");
         System.out.println(" ");
-        System.out.println("What card would you like to place down? Make sure your choice matches the card exact name!");
+        System.out.println("Write the card (exact name) that you want to use! Type `Draw` to draw a card.");
         String response = reader.nextLine();
         String[] input = response.split(" ");
+        System.out.println("");
 
+        if (response.equals("Draw")){
+            System.out.println("Okidoki drawing a card for you...");
+            drawCard(deck, playerList.get(activeIndex).getPlayerCards(), 1, playerList.get(activeIndex).getPlayerName());
+            return nextTurn(playerList, activeIndex, 1);
+        }
+        else if (input.length < 2){
+            System.out.println("Your input needs to have two types. Ex.) Red 0, or Wild Black");
+            return placeCardHuman(playerList.get(activeIndex).getPlayerCards(), deck, cardPile, playerList, possibleColors, activeIndex);
+        }
     
         //Checks User Card choice Validity
         for (int i = 0; i < userCards.size(); i++) {
@@ -272,7 +281,7 @@ public class Game { //Where the main game happens
                 return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName());
             }
             // Place Wild +4 Card
-            else if (card.getCardType().equals("Wild +4")) {
+            else if (card.getCardType().equals("Wild +4") && response.contains("Wild +4")) {
                 card.wildCardUser(possibleColors);
                 int victimIndex = nextTurn(playerList, activeIndex, 1);
                 int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName());
@@ -288,9 +297,9 @@ public class Game { //Where the main game happens
             }
             // Place Skip Card
             else if (card.getCardType().equals("Skip") && input[0].equals(card.getColor()) && input[1].equals("Skip") && isCardValidNonNormal(input, cardPile)) {
-                int victimIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName());
-                System.out.println("O NAH, " + playerList.get(activeIndex).getPlayerName() + " skipped " + playerList.get(victimIndex).getPlayerName() + "!");
+                int victimIndex = nextTurn(playerList, activeIndex, 1);
                 int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName());
+                System.out.println("O NAH, " + playerList.get(activeIndex).getPlayerName() + " skipped " + playerList.get(victimIndex).getPlayerName() + "!");
                 return newActiveIndex;
             }
             // Place Reverse Card
@@ -316,59 +325,48 @@ public class Game { //Where the main game happens
 
     //Robot placing card
     public static int placeCardRobot(ArrayList<Card> userCards, ArrayList<Card> deck, ArrayList<Card> cardPile, ArrayList<Player> playerList, String[] possibleColors, int activeIndex) {
-        Card deckCard = cardPile.get(0);
+        Card deckCard = cardPile.get(0); // Current card in the pile
         String response = "";
-    
+
         for (int i = 0; i < userCards.size(); i++) {
             Card card = userCards.get(i);
-            
-            // Place Normal Card
-            if (card.getCardType().equals("Normal") && (isCardValidNormalForRobot(card, cardPile))) {
+    
+            if (card.getCardType().equals("Normal") && (card.getColor().equals(deckCard.getColor()) || card.getCardValue() == deckCard.getCardValue())) {
                 response = card.getColor() + " " + card.getCardValue();
                 return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName());
-            }
-            // Place Wild Card
-            else if (card.getCardType().equals("Wild") && card.getColor().equals("Black")) {
+            } else if (card.getCardType().equals("Wild") && card.getColor().equals("Black")) {
                 card.wildCardRobot(possibleColors);
                 response = card.getCardType() + " " + card.getColor();
                 return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName());
-            }
-            // Place Wild +4 Card
-            else if (card.getCardType().equals("Wild +4") && card.getColor().equals("Black")) {
+            } else if (card.getCardType().equals("Wild +4") && card.getColor().equals("Black")) {
                 card.wildCardRobot(possibleColors);
                 response = card.getCardType() + " " + card.getColor();
                 int victimIndex = nextTurn(playerList, activeIndex, 1);
                 int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName());
                 drawCard(deck, playerList.get(victimIndex).getPlayerCards(), 4, playerList.get(victimIndex).getPlayerName());
                 return newActiveIndex;
-            }
-            // Place +2 Card
-            else if (card.getCardType().equals("Normal +2") && (deckCard.getCardType().equals(card.getCardType()) || deckCard.getColor().equals(card.getColor()))){
+            } else if (card.getCardType().equals("Normal +2") && (card.getCardType().equals(deckCard.getCardType()) || card.getColor().equals(deckCard.getColor()))){
                 response = card.getColor() + " +2";
                 int victimIndex = nextTurn(playerList, activeIndex, 1);
                 int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName());
                 drawCard(deck, playerList.get(victimIndex).getPlayerCards(), 2, playerList.get(victimIndex).getPlayerName());
                 return newActiveIndex;
-            }
-            // Place Skip Card
-            else if (card.getCardType().equals("Skip") && (card.getCardType().equals(deckCard.getCardType()) || card.getColor().equals(deckCard.getColor()))) {
+            } else if (card.getCardType().equals("Skip") && (card.getCardType().equals(deckCard.getCardType()) || card.getColor().equals(deckCard.getColor()))) {
                 response = card.getColor() + " " + card.getCardType();
-                int victimIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName());
+                int victimIndex = nextTurn(playerList, activeIndex, 1);
+                int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName());
                 System.out.println("O NAH, " + playerList.get(activeIndex).getPlayerName() + " skipped " + playerList.get(victimIndex).getPlayerName() + "!");
-                return placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName());
-            }
-            // Place Reverse Card
-            else if (card.getCardType().equals("Reverse") && (card.getCardType().equals(deckCard.getCardType()) || card.getColor().equals(deckCard.getColor()))) {
+                return newActiveIndex;
+            } else if (card.getCardType().equals("Reverse") && (card.getCardType().equals(deckCard.getCardType()) || card.getColor().equals(deckCard.getColor()))) {
                 String oldActiveIndex = playerList.get(activeIndex).getPlayerName();
                 int newActiveIndex = reverseAtIndex(playerList, activeIndex);
                 response = card.getColor() + " " + card.getCardType();
                 return placeCard(userCards, cardPile, playerList, newActiveIndex, card, 1, response, oldActiveIndex);
             }
         }
-        
+    
         drawCard(deck, userCards, 1, playerList.get(activeIndex).getPlayerName());
         return nextTurn(playerList, activeIndex, 1);
-        
     }
         
         
@@ -416,7 +414,7 @@ public class Game { //Where the main game happens
     }
 
     public static int placeCard(ArrayList<Card> userCards, ArrayList<Card> cardPile, ArrayList<Player> playerList, int activeIndex, Card card, int turnIncrement, String response, String userName) {
-        System.out.println(" ");
+    
         System.out.println("--- Placing Card... ---");
         System.out.println(userName + " placed down: " + response);
         cardPile.add(0, card);
@@ -451,7 +449,7 @@ public class Game { //Where the main game happens
             case "Wild +4":
                 System.out.print(cards.get(index).getCardType() +  " " + cards.get(index).getColor());
                 break;
-            case "Normal +2":
+            case "Normal +2": 
                 System.out.print(cards.get(index).getColor() + " +2");
                 break;
             case "Reverse":
