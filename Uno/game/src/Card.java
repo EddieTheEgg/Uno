@@ -6,9 +6,6 @@ public class Card {
     private String color;
     private int cardValue;
 
-
-    //whole lotta constructors, whole lotta red
-
     //Normal Card
     public Card(String normal, String color, int cardValue){
         type = normal;
@@ -24,7 +21,7 @@ public class Card {
     }
 
     //Reverse Card
-    public Card (String reverse, String color, String unique){ //as long as parameters are different, the card is called
+    public Card (String reverse, String color, String unique){ //as long as parameters are different, the card targeted is constructed
         type = reverse;
         this.color = color;
         cardValue = 20;
@@ -51,10 +48,7 @@ public class Card {
         cardValue = 90;
     }
 
-
-
     //Get Methods
-
     public String getCardType(){
         return type;
     }
@@ -67,24 +61,6 @@ public class Card {
         return cardValue;
     }
 
-    //Set Methods
-
-    
-
-    //Card Effects
-
-    //Normal Card when called moves to next person.
-    
-
-
-    //This is for Wild and +4 cards
-    public void setCardColor(String userColorChoice){
-        color = userColorChoice;
-    }
-   
-    public void setRobotCardColor(String robotColorChoice){
-        color = robotColorChoice;
-    }
 
     //Special Card Effects
 
@@ -99,13 +75,8 @@ public class Card {
         System.out.println("What color would you like to choose? Red, Yellow, Green, or Blue");
         String colorResponse = reader.nextLine();
         color = colorResponse;
-
     }
 
-    //+2 Card Effect
-    public void plusTwoEffect(){
-        
-    }
     
 
     

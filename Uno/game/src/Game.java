@@ -5,12 +5,10 @@ public class Game { //Where the main game happens
         
         //Creating Players
         ArrayList<Player> playerList = startGame();
-        //Order is always 0->1->2->3
     
         //Deck Creation
         Deck game = new Deck();
         String [] possibleColors = game.getColors();
-
         game.createDeck();
         game.shuffleDeck();
 
@@ -24,22 +22,30 @@ public class Game { //Where the main game happens
         ArrayList<Card> cardPile = new ArrayList<Card>();  //cardPile is the current card pile being played on
         startCard(deck, cardPile); //adds the starting card to the pile
        
-        //Display Current Card and User Cards
-
+        //Start Game
         System.out.println("");
         System.out.println("🃏 Welcome to UNO " + playerList.get(0).getPlayerName() + "!🃏");
         System.out.println("");
 
         simulateGame(deck, cardPile, playerList, possibleColors);
-        
-
-
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
         
 //-----------------FUNCTIONS------------------
 
-//-----FUNCTION TO SIMULATE THE GAME AUTOMATICALLY-----
+//----------FUNCTION TO SIMULATE THE GAME AUTOMATICALLY-----------
  //Simualtes the game
     public static void simulateGame(ArrayList<Card> deck, ArrayList<Card> cardPile, ArrayList<Player> playerList, String [] possibleColors){
         int activeIndex = 0;
@@ -47,24 +53,19 @@ public class Game { //Where the main game happens
         int roundCount = 1;
         while (playerList.get(previousActiveIndex).getPlayerCards().size()!= 0){
             System.out.println("\n\n\n\n\n\n");
+            
             System.out.println("-------------------------------------------------------------------------------------------- (Round " + roundCount + ") ");
             System.out.println("------ Information about Game Stats: ------");
-        
             getPlayerOrder(playerList);
             System.out.println("");
-
             getPlayerCardCount(playerList);
             System.out.println("\n");
         
-
             System.out.println("------ Information about Current Round: ------");
-
             System.out.println("⭐ CURRENT PLAYER: " + playerList.get(activeIndex).getPlayerName());
-
             System.out.print("⭕ CURRENT CARD IN PILE: "); 
             getCurrentCard(cardPile, 0);
-            System.out.println(" ");
-            System.out.println(" ");
+            System.out.println("\n");
 
             System.out.println("Press enter to continue");
             reader.nextLine();
@@ -91,7 +92,19 @@ public class Game { //Where the main game happens
         
     }
 
-//-----FUNCTIONS TO SETUP THE GAME-----
+
+
+
+
+
+
+
+
+
+
+
+
+//---------FUNCTIONS TO SETUP THE GAME----------
 
     //Function: Start the game by creating the amount of computer players and the player based on user input
     public static ArrayList<Player> startGame(){
@@ -145,25 +158,21 @@ public class Game { //Where the main game happens
         }
     }
 
-//--Action Functions (Functions that change gameplay)
-    public static void addCard(ArrayList<Card> cardPile, Card card){
-        cardPile.add(0, card);
-    }
-
-    //Returns the next player based on incrementAmount. Precondition is that we know the incrementAmount
-    public static int nextTurn(ArrayList<Player> playerList, int activeIndex, int incrementAmount){
-        activeIndex+= incrementAmount;
-        if(activeIndex >= playerList.size()){
-            activeIndex = activeIndex - playerList.size();
-            return activeIndex;
-        }
-        else{
-            return activeIndex;
-        }
-    }
 
 
 
+
+
+
+
+
+
+
+
+
+
+//---------FUNCTIONS TO GET GAME INFORMATION----------
+    //Function: Prints order of players with arrows.
     public static void getPlayerOrder(ArrayList<Player> playerList){
         System.out.println("Current Order of Players:");
         for (int i = 0; i< playerList.size(); i++){
@@ -175,13 +184,14 @@ public class Game { //Where the main game happens
             }
         }
     }
+
     //Function:Prints out ONLY the player's cards when called.
     public static void displayUserCards(ArrayList<Card> playerCards){
-       System.out.println("These are your current card(s): ");
+    System.out.println("These are your current card(s): ");
         if (playerCards.size() == 0 ){
         System.out.println("YOU WON!"); //Might make a function with uno here
-       }
-       else{
+    }
+    else{
         for(int i = 0; i<playerCards.size(); i++){
             if(i == playerCards.size()-1){
                 getCurrentCard(playerCards, i);
@@ -191,9 +201,10 @@ public class Game { //Where the main game happens
                 System.out.print(" | ");
             }
         }
-       }
+      }   
     }
 
+    //Function: Prints out each player's current amount of cards
     public static void getPlayerCardCount(ArrayList<Player> playerList){
         System.out.println("Card Amount for Each Player Currently:");
         for (int i = 0; i<playerList.size(); i++){
@@ -206,16 +217,58 @@ public class Game { //Where the main game happens
             
         }
     }
+    
+    //Function: Prints out current card given index of the user cards.
+    public static void getCurrentCard(ArrayList<Card> cards, int index){
+        switch (cards.get(index).getCardType()){
+            case "Normal":
+                System.out.print(cards.get(index).getColor() + " " + cards.get(index).getCardValue());
+                break;
+            case "Wild":
+                System.out.print(cards.get(index).getCardType() + " " +  cards.get(index).getColor());
+                break;
+            case "Wild +4":
+                System.out.print(cards.get(index).getCardType() +  " " + cards.get(index).getColor());
+                break;
+            case "Normal +2": 
+                System.out.print(cards.get(index).getColor() + " +2");
+                break;
+            case "Reverse":
+                System.out.print(cards.get(index).getColor() + " Reverse");
+                break;
+            case "Skip":
+                System.out.print(cards.get(index).getColor() + " Skip");
+                break;
+        }
+    }
 
+
+
+
+
+
+
+
+
+
+
+
+
+//------------FUNCTIONS TO MODIFY CARDS--------------
+    
+    //Function: If active player is human, get user input on a card or draw.
     public static int placeCardHuman(ArrayList<Card> userCards, ArrayList<Card> deck, ArrayList<Card> cardPile, ArrayList<Player> playerList, String[] possibleColors, int activeIndex, boolean saidUno) {
+        //Display Cards
         displayUserCards(userCards);
-        System.out.println(" ");
-        System.out.println(" ");
-        System.out.println("Write the card (exact name) that you want to use! Type `Draw` to draw a card. Type `Uno` to activate Uno.");
+        
+        //Get user input
+        System.out.println("\n");
+        System.out.println("Type the card (exact name) that you want to use! Type `Draw` to draw a card. Type `Uno` to activate Uno.");
         String response = reader.nextLine();
         String[] input = response.split(" ");
         System.out.println("");
 
+        //Checking useInputs
         if (response.equals("Uno") && userCards.size() == 2){
             System.out.println(playerList.get(activeIndex).getPlayerName() + " ACTIVATED UNO!!");
             saidUno = true;
@@ -229,7 +282,6 @@ public class Game { //Where the main game happens
             drawCard(deck, playerList.get(activeIndex).getPlayerCards(), 2, playerList.get(activeIndex).getPlayerName());
             return nextTurn(playerList, activeIndex, 1);
         }
-
         if (response.equals("Draw")){
             System.out.println("Okidoki drawing a card for you...");
             drawCard(deck, playerList.get(activeIndex).getPlayerCards(), 1, playerList.get(activeIndex).getPlayerName());
@@ -239,7 +291,7 @@ public class Game { //Where the main game happens
             System.out.println("Your input should have two parts or you made a typo. Ex.) Green 0, Wild Black");
             return placeCardHuman(playerList.get(activeIndex).getPlayerCards(), deck, cardPile, playerList, possibleColors, activeIndex, false);
         }
-    
+
         //Checks User Card choice Validity
         for (int i = 0; i < userCards.size(); i++) {
             Card card = userCards.get(i);
@@ -283,7 +335,7 @@ public class Game { //Where the main game happens
                 return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, oldActiveIndex, saidUno, deck);
             }
         }
-        
+        // Typo or Draw Part 2
         System.out.println("You might've made a typo or your card is invalid");
         System.out.println("Do you want to draw a card instead? Type Yes or No.");
         String answer = reader.nextLine();
@@ -297,63 +349,112 @@ public class Game { //Where the main game happens
         }
     }
 
-    //Robot placing card
+    //Function: If active player is robot, automate card choice or draw.
     public static int placeCardRobot(ArrayList<Card> userCards, ArrayList<Card> deck, ArrayList<Card> cardPile, ArrayList<Player> playerList, String[] possibleColors, int activeIndex) {
-        Card deckCard = cardPile.get(0); // Current card in the pile
-        String response = "";
-        boolean saidUno = false;
+    Card deckCard = cardPile.get(0); // Current card in the pile
+    String response = "";
+    boolean saidUno = false;
 
-        if (playerList.get(activeIndex).getPlayerCards().size() == 2){
-            System.out.println(playerList.get(activeIndex).getPlayerName() + " ACTIVATED UNO!!");
-            saidUno = true;
-        }
+    if (playerList.get(activeIndex).getPlayerCards().size() == 2){
+        System.out.println(playerList.get(activeIndex).getPlayerName() + " ACTIVATED UNO!!");
+        saidUno = true;
+    }
 
-        for (int i = 0; i < userCards.size(); i++) {
-            Card card = userCards.get(i);
-    
-            if (card.getCardType().equals("Normal") && (card.getColor().equals(deckCard.getColor()) || card.getCardValue() == deckCard.getCardValue())) {
-                response = card.getColor() + " " + card.getCardValue();
-                return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
-            } else if (card.getCardType().equals("Wild") && card.getColor().equals("Black")) {
-                card.wildCardRobot(possibleColors);
-                response = card.getCardType() + " " + card.getColor();
-                return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
-            } else if (card.getCardType().equals("Wild +4") && card.getColor().equals("Black")) {
-                card.wildCardRobot(possibleColors);
-                response = card.getCardType() + " " + card.getColor();
-                int victimIndex = nextTurn(playerList, activeIndex, 1);
-                int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
-                drawCard(deck, playerList.get(victimIndex).getPlayerCards(), 4, playerList.get(victimIndex).getPlayerName());
-                return newActiveIndex;
-            } else if (card.getCardType().equals("Normal +2") && (card.getCardType().equals(deckCard.getCardType()) || card.getColor().equals(deckCard.getColor()))){
-                response = card.getColor() + " +2";
-                int victimIndex = nextTurn(playerList, activeIndex, 1);
-                int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
-                drawCard(deck, playerList.get(victimIndex).getPlayerCards(), 2, playerList.get(victimIndex).getPlayerName());
-                return newActiveIndex;
-            } else if (card.getCardType().equals("Skip") && (card.getCardType().equals(deckCard.getCardType()) || card.getColor().equals(deckCard.getColor()))) {
-                response = card.getColor() + " " + card.getCardType();
-                int victimIndex = nextTurn(playerList, activeIndex, 1);
-                int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
-                System.out.println("O NAH, " + playerList.get(activeIndex).getPlayerName() + " skipped " + playerList.get(victimIndex).getPlayerName() + "!");
-                return newActiveIndex;
-            } else if (card.getCardType().equals("Reverse") && (card.getCardType().equals(deckCard.getCardType()) || card.getColor().equals(deckCard.getColor()))) {
-                String oldActiveIndex = playerList.get(activeIndex).getPlayerName();
-                int newActiveIndex = reverseAtIndex(playerList, activeIndex);
-                response = card.getColor() + " " + card.getCardType();
-                return placeCard(userCards, cardPile, playerList, newActiveIndex, card, 1, response, oldActiveIndex, saidUno, deck);
-            }
+    for (int i = 0; i < userCards.size(); i++) {
+        Card card = userCards.get(i);
+
+        if (card.getCardType().equals("Normal") && (card.getColor().equals(deckCard.getColor()) || card.getCardValue() == deckCard.getCardValue())) {
+            response = card.getColor() + " " + card.getCardValue();
+            return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
+        } else if (card.getCardType().equals("Wild") && card.getColor().equals("Black")) {
+            card.wildCardRobot(possibleColors);
+            response = card.getCardType() + " " + card.getColor();
+            return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
+        } else if (card.getCardType().equals("Wild +4") && card.getColor().equals("Black")) {
+            card.wildCardRobot(possibleColors);
+            response = card.getCardType() + " " + card.getColor();
+            int victimIndex = nextTurn(playerList, activeIndex, 1);
+            int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
+            drawCard(deck, playerList.get(victimIndex).getPlayerCards(), 4, playerList.get(victimIndex).getPlayerName());
+            return newActiveIndex;
+        } else if (card.getCardType().equals("Normal +2") && (card.getCardType().equals(deckCard.getCardType()) || card.getColor().equals(deckCard.getColor()))){
+            response = card.getColor() + " +2";
+            int victimIndex = nextTurn(playerList, activeIndex, 1);
+            int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
+            drawCard(deck, playerList.get(victimIndex).getPlayerCards(), 2, playerList.get(victimIndex).getPlayerName());
+            return newActiveIndex;
+        } else if (card.getCardType().equals("Skip") && (card.getCardType().equals(deckCard.getCardType()) || card.getColor().equals(deckCard.getColor()))) {
+            response = card.getColor() + " " + card.getCardType();
+            int victimIndex = nextTurn(playerList, activeIndex, 1);
+            int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
+            System.out.println("O NAH, " + playerList.get(activeIndex).getPlayerName() + " skipped " + playerList.get(victimIndex).getPlayerName() + "!");
+            return newActiveIndex;
+        } else if (card.getCardType().equals("Reverse") && (card.getCardType().equals(deckCard.getCardType()) || card.getColor().equals(deckCard.getColor()))) {
+            String oldActiveIndex = playerList.get(activeIndex).getPlayerName();
+            int newActiveIndex = reverseAtIndex(playerList, activeIndex);
+            response = card.getColor() + " " + card.getCardType();
+            return placeCard(userCards, cardPile, playerList, newActiveIndex, card, 1, response, oldActiveIndex, saidUno, deck);
         }
-    
+    }
         drawCard(deck, userCards, 1, playerList.get(activeIndex).getPlayerName());
         return nextTurn(playerList, activeIndex, 1);
     }
-        
-        
-   
-    
 
-    //Functions to check Card Validities
+    //Function: Places a card down and moves to next turn. (Uno considered too)
+    public static int placeCard(ArrayList<Card> userCards, ArrayList<Card> cardPile, ArrayList<Player> playerList, int activeIndex, Card card, int turnIncrement, String response, String userName, boolean saidUno, ArrayList<Card> deck) {
+        if (saidUno == false && playerList.get(activeIndex).getPlayerCards().size() == 2){
+            System.out.println("You did not say UNO before placing a card down! You now need to draw 2 cards!");
+            drawCard(deck, userCards, 2, playerList.get(activeIndex).getPlayerName());
+            return nextTurn(playerList, activeIndex, 1);
+        }
+        else{
+            System.out.println("--- Placing Card... ---");
+            System.out.println(userName + " placed down: " + response);
+            cardPile.add(0, card);
+            userCards.remove(card);
+            activeIndex = nextTurn(playerList, activeIndex, turnIncrement);
+            return activeIndex;
+        }
+    }
+
+    //Function: Draws a certain amount of card based on known input (+2, Wild +4, etc)
+    public static void drawCard(ArrayList<Card> deck, ArrayList<Card> userCards, int drawAmount, String userName){
+        for(int i = 0 ; i<drawAmount; i++){
+            if(deck.isEmpty()) {
+                System.out.println("The deck is empty. Creating a new deck...");
+                Deck newDeck = new Deck();  
+                newDeck.createDeck();       
+                newDeck.shuffleDeck();      
+                deck.addAll(newDeck.getDeck());   //new method feature built in ArrayList
+            }
+            userCards.add(deck.get(0));
+            deck.remove(0);
+        }
+        System.out.println("Dang, " + userName + " has drawn " + drawAmount + " card(s)");
+    }
+
+
+
+
+
+
+
+
+//------------MISC FUNCTIONS--------------
+    
+    //Returns the next player based on incrementAmount. Precondition is that we know the incrementAmount
+    public static int nextTurn(ArrayList<Player> playerList, int activeIndex, int incrementAmount){
+        activeIndex+= incrementAmount;
+        if(activeIndex >= playerList.size()){
+            activeIndex = activeIndex - playerList.size();
+            return activeIndex;
+        }
+        else{
+            return activeIndex;
+        }
+    }
+
+    //Function: to check Card Validities
     public static boolean isCardValidNormal(String[] input, ArrayList<Card> cardPile) {
         Card topCard = cardPile.get(0);
         // Check if color matches or value matches
@@ -374,7 +475,6 @@ public class Game { //Where the main game happens
         return robotCard.getColor().equals(topCard.getColor()) || robotCard.getCardValue() == topCard.getCardValue();
     }
 
-
     public static boolean isCardValidNonNormal (String [] input, ArrayList<Card> cardPile){
         if (input[0].equals(cardPile.get(0).getColor()) || input[1].equals(String.valueOf(cardPile.get(0).getCardType()))){
             return true;
@@ -393,58 +493,7 @@ public class Game { //Where the main game happens
         return newActiveIndex;
     }
 
-    public static int placeCard(ArrayList<Card> userCards, ArrayList<Card> cardPile, ArrayList<Player> playerList, int activeIndex, Card card, int turnIncrement, String response, String userName, boolean saidUno, ArrayList<Card> deck) {
-        if (saidUno == false && playerList.get(activeIndex).getPlayerCards().size() == 2){
-            System.out.println("You did not say UNO before placing a card down! You now need to draw 2 cards!");
-            drawCard(deck, userCards, 2, playerList.get(activeIndex).getPlayerName());
-            return nextTurn(playerList, activeIndex, 1);
-        }
-        else{
-            System.out.println("--- Placing Card... ---");
-            System.out.println(userName + " placed down: " + response);
-            cardPile.add(0, card);
-            userCards.remove(card);
-            activeIndex = nextTurn(playerList, activeIndex, turnIncrement);
-            return activeIndex;
-        }
-        
-}
+    
 
-    public static void drawCard(ArrayList<Card> deck, ArrayList<Card> userCards, int drawAmount, String userName){
-        for(int i = 0 ; i<drawAmount; i++){
-            if(deck.isEmpty()) {
-                System.out.println("The deck is empty. Creating a new deck...");
-                Deck newDeck = new Deck();  
-                newDeck.createDeck();       
-                newDeck.shuffleDeck();      
-                deck.addAll(newDeck.getDeck());   //new method feature built in ArrayList
-            }
-            userCards.add(deck.get(0));
-            deck.remove(0);
-        }
-        System.out.println("Dang, " + userName + " has drawn " + drawAmount + " card(s)");
-    }
-
-    public static void getCurrentCard(ArrayList<Card> cards, int index){
-        switch (cards.get(index).getCardType()){
-            case "Normal":
-                System.out.print(cards.get(index).getColor() + " " + cards.get(index).getCardValue());
-                break;
-            case "Wild":
-                System.out.print(cards.get(index).getCardType() + " " +  cards.get(index).getColor());
-                break;
-            case "Wild +4":
-                System.out.print(cards.get(index).getCardType() +  " " + cards.get(index).getColor());
-                break;
-            case "Normal +2": 
-                System.out.print(cards.get(index).getColor() + " +2");
-                break;
-            case "Reverse":
-                System.out.print(cards.get(index).getColor() + " Reverse");
-                break;
-            case "Skip":
-                System.out.print(cards.get(index).getColor() + " Skip");
-                break;
-        }
-    }
+    
 }

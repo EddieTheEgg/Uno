@@ -66,8 +66,4 @@ public class Deck { //Where the deck is created and accessed
     public String[] getColors() {
         return colors;
     }
-
-   
-
-
 }
