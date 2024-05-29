@@ -492,8 +492,4 @@ public class Game { //Where the main game happens
         // Return the new active index
         return newActiveIndex;
     }
-
-    
-
-    
 }
