@@ -40,7 +40,6 @@ public class Deck { //Where the deck is created and accessed
           
         }
     }
-       //debugging to test if cards were added properly
     }
 
     //Collections is a super method that allows us to shuffle deck in part of ArrayList class
@@ -58,10 +57,6 @@ public class Deck { //Where the deck is created and accessed
         return deck.size();
     }
     
-    //Draw Card  (Might not need)
-    public void drawCard(Player activePlayer){
-
-    }
     //Get the Deck Colors
     public String[] getColors() {
         return colors;
