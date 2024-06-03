@@ -3,6 +3,16 @@ public class Game { //Where the main game happens
     static Scanner reader = new Scanner(System.in);
     public static void main(String[] args) throws Exception {
         
+
+         //Color Emojii to make it easier to read cards. 
+        //Map is also known as Dictionary here, but there is no specific Java class called Dictionary. So we use hashmaps!
+        HashMap<String, String> colorEmojiCards = new HashMap<>();
+        colorEmojiCards.put("Red", "🔴");
+        colorEmojiCards.put("Green", "🟢");
+        colorEmojiCards.put("Yellow", "🟡");
+        colorEmojiCards.put("Blue", "🔵");
+        colorEmojiCards.put("Black", "⚫");
+
         //Creating Players
         ArrayList<Player> playerList = startGame();
     
@@ -27,11 +37,12 @@ public class Game { //Where the main game happens
         System.out.println("🃏 Welcome to UNO " + playerList.get(0).getPlayerName() + "!🃏");
         System.out.println("");
 
-        simulateGame(deck, cardPile, playerList, possibleColors);
+        simulateGame(deck, cardPile, playerList, possibleColors, colorEmojiCards);
+
+
+
+    
     }
-
-
-
 
 
 
@@ -49,7 +60,7 @@ public class Game { //Where the main game happens
 
 //----------FUNCTION TO SIMULATE THE GAME AUTOMATICALLY-----------
  //Simualtes the game
-    public static void simulateGame(ArrayList<Card> deck, ArrayList<Card> cardPile, ArrayList<Player> playerList, String [] possibleColors){
+    public static void simulateGame(ArrayList<Card> deck, ArrayList<Card> cardPile, ArrayList<Player> playerList, String [] possibleColors, HashMap<String, String> colorEmojiCards){
         int activeIndex = 0;
         int previousActiveIndex = 0;
         int roundCount = 1;
@@ -57,16 +68,19 @@ public class Game { //Where the main game happens
             System.out.println("\n\n\n\n\n\n");
             
             System.out.println("-------------------------------------------------------------------------------------------- (Round " + roundCount + ") ");
+            System.out.println("");
             System.out.println("------ Information about Game Stats: ------");
             getPlayerOrder(playerList);
             System.out.println("");
             getPlayerCardCount(playerList);
-            System.out.println("\n");
+            System.out.println("");
+            System.out.println("----------------------------------------------------------------");
         
+            System.out.println("");
             System.out.println("------ Information about Current Round: ------");
-            System.out.println("⭐ CURRENT PLAYER: " + playerList.get(activeIndex).getPlayerName());
-            System.out.print("⭕ CURRENT CARD IN PILE: "); 
-            getCurrentCard(cardPile, 0);
+            System.out.println("⭕ CURRENT PLAYER: " + playerList.get(activeIndex).getPlayerName());
+            System.out.print("⭐  CURRENT CARD IN PILE: "); 
+            getCurrentCard(cardPile, 0, colorEmojiCards);
             System.out.println("\n");
 
             System.out.println("Press enter to continue");
@@ -75,7 +89,7 @@ public class Game { //Where the main game happens
             if (playerList.get(activeIndex).isPlayer() == true){
                 previousActiveIndex = activeIndex;
                 System.out.println("----- " + playerList.get(activeIndex).getPlayerName() + " Cards -----");
-                activeIndex = placeCardHuman(playerList.get(activeIndex).getPlayerCards(), deck, cardPile, playerList, possibleColors, activeIndex, false);
+                activeIndex = placeCardHuman(playerList.get(activeIndex).getPlayerCards(), deck, cardPile, playerList, possibleColors, activeIndex, false, colorEmojiCards);
                 System.out.println("Press enter to continue");
                 reader.nextLine();
                 System.out.println("");
@@ -83,7 +97,7 @@ public class Game { //Where the main game happens
             }
             else{
                 previousActiveIndex = activeIndex;
-                activeIndex = placeCardRobot(playerList.get(activeIndex).getPlayerCards(),deck, cardPile, playerList, possibleColors, activeIndex);
+                activeIndex = placeCardRobot(playerList.get(activeIndex).getPlayerCards(),deck, cardPile, playerList, possibleColors, activeIndex, colorEmojiCards);
                 System.out.print("Press enter to continue");
                 reader.nextLine();
                 roundCount ++;
@@ -188,7 +202,7 @@ public class Game { //Where the main game happens
     }
 
     //Function:Prints out ONLY the player's cards when called.
-    public static void displayUserCards(ArrayList<Card> playerCards){
+    public static void displayUserCards(ArrayList<Card> playerCards, HashMap<String, String> colorEmojiCards ){
     System.out.println("These are your current card(s): ");
         if (playerCards.size() == 0 ){
         System.out.println("YOU WON!"); //Might make a function with uno here
@@ -196,10 +210,10 @@ public class Game { //Where the main game happens
     else{
         for(int i = 0; i<playerCards.size(); i++){
             if(i == playerCards.size()-1){
-                getCurrentCard(playerCards, i);
+                getCurrentCard(playerCards, i, colorEmojiCards);
             }
             else{
-                getCurrentCard(playerCards, i);
+                getCurrentCard(playerCards, i, colorEmojiCards);
                 System.out.print(" | ");
             }
         }
@@ -221,25 +235,25 @@ public class Game { //Where the main game happens
     }
     
     //Function: Prints out current card given index of the user cards.
-    public static void getCurrentCard(ArrayList<Card> cards, int index){
+    public static void getCurrentCard(ArrayList<Card> cards, int index, HashMap<String, String> colorEmojiCards){
         switch (cards.get(index).getCardType()){
             case "Normal":
-                System.out.print(cards.get(index).getColor() + " " + cards.get(index).getCardValue());
+                System.out.print(colorEmojiCards.get(cards.get(index).getColor()) + cards.get(index).getColor() + " " + cards.get(index).getCardValue());
                 break;
             case "Wild":
-                System.out.print(cards.get(index).getCardType() + " " +  cards.get(index).getColor());
+                System.out.print(colorEmojiCards.get(cards.get(index).getColor()) + cards.get(index).getCardType() + " " +  cards.get(index).getColor());
                 break;
             case "Wild +4":
-                System.out.print(cards.get(index).getCardType() +  " " + cards.get(index).getColor());
+                System.out.print(colorEmojiCards.get(cards.get(index).getColor()) + cards.get(index).getCardType() +  " " + cards.get(index).getColor());
                 break;
             case "Normal +2": 
-                System.out.print(cards.get(index).getColor() + " +2");
+                System.out.print(colorEmojiCards.get(cards.get(index).getColor()) + cards.get(index).getColor() + " +2");
                 break;
             case "Reverse":
-                System.out.print(cards.get(index).getColor() + " Reverse");
+                System.out.print(colorEmojiCards.get(cards.get(index).getColor()) + cards.get(index).getColor() + " Reverse");
                 break;
             case "Skip":
-                System.out.print(cards.get(index).getColor() + " Skip");
+                System.out.print(colorEmojiCards.get(cards.get(index).getColor()) + cards.get(index).getColor() + " Skip");
                 break;
         }
     }
@@ -259,9 +273,9 @@ public class Game { //Where the main game happens
 //------------FUNCTIONS TO MODIFY CARDS--------------
     
     //Function: If active player is human, get user input on a card or draw.
-    public static int placeCardHuman(ArrayList<Card> userCards, ArrayList<Card> deck, ArrayList<Card> cardPile, ArrayList<Player> playerList, String[] possibleColors, int activeIndex, boolean saidUno) {
+    public static int placeCardHuman(ArrayList<Card> userCards, ArrayList<Card> deck, ArrayList<Card> cardPile, ArrayList<Player> playerList, String[] possibleColors, int activeIndex, boolean saidUno, HashMap<String, String> colorEmojiCards) {
         //Display Cards
-        displayUserCards(userCards);
+        displayUserCards(userCards, colorEmojiCards);
         
         //Get user input
         System.out.println("\n");
@@ -287,11 +301,14 @@ public class Game { //Where the main game happens
         if (response.equals("Draw")){
             System.out.println("Okidoki drawing a card for you...");
             drawCard(deck, playerList.get(activeIndex).getPlayerCards(), 1, playerList.get(activeIndex).getPlayerName());
+            System.out.print("The card you have drawn is: ");
+            getCurrentCard(userCards, userCards.size()-1, colorEmojiCards);
+            System.out.println("\n");
             return nextTurn(playerList, activeIndex, 1);
         }
         else if (input.length < 2){
             System.out.println("Your input should have two parts or you made a typo. Ex.) Green 0, Wild Black");
-            return placeCardHuman(playerList.get(activeIndex).getPlayerCards(), deck, cardPile, playerList, possibleColors, activeIndex, false);
+            return placeCardHuman(playerList.get(activeIndex).getPlayerCards(), deck, cardPile, playerList, possibleColors, activeIndex, false, colorEmojiCards);
         }
 
         //Checks User Card choice Validity
@@ -300,17 +317,19 @@ public class Game { //Where the main game happens
             
             // Place Normal Card
             if (card.getCardType().equals("Normal") && input[0].equals(card.getColor()) && input[1].equals(String.valueOf(card.getCardValue())) && isCardValidNormal(input, cardPile)) {
+                response = colorEmojiCards.get(card.getColor()) + response;
                 return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
             }
             // Place Wild Card
             else if (card.getCardType().equals("Wild") && input[0].equals(card.getCardType()) && input[1].equals(card.getColor())) {
                 card.wildCardUser(possibleColors);
-                response = "Wild " + card.getColor();
+                response = colorEmojiCards.get(card.getColor()) + "Wild " + card.getColor();
                 return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
             }
             // Place Wild +4 Card
             else if (card.getCardType().equals("Wild +4") && response.contains("Wild +4")) {
                 card.wildCardUser(possibleColors);
+                response = colorEmojiCards.get(card.getColor()) + "Wild +4 " + card.getColor();
                 int victimIndex = nextTurn(playerList, activeIndex, 1);
                 int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
                 drawCard(deck, playerList.get(victimIndex).getPlayerCards(), 4, playerList.get(victimIndex).getPlayerName());
@@ -319,6 +338,7 @@ public class Game { //Where the main game happens
             // Place +2 Card
             else if (card.getCardType().equals("Normal +2") && (response.equals(userCards.get(i).getColor() + " +2")) && isCardValidNonNormal(input, cardPile)){
                 int victimIndex = nextTurn(playerList, activeIndex, 1);
+                response = colorEmojiCards.get(card.getColor()) + response;
                 int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
                 drawCard(deck, playerList.get(victimIndex).getPlayerCards(), 2, playerList.get(victimIndex).getPlayerName());
                 return newActiveIndex;
@@ -326,6 +346,7 @@ public class Game { //Where the main game happens
             // Place Skip Card
             else if (card.getCardType().equals("Skip") && input[0].equals(card.getColor()) && input[1].equals("Skip") && isCardValidNonNormal(input, cardPile)) {
                 int victimIndex = nextTurn(playerList, activeIndex, 1);
+                response = colorEmojiCards.get(card.getColor()) + response;
                 int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
                 System.out.println("O NAH, " + playerList.get(activeIndex).getPlayerName() + " skipped " + playerList.get(victimIndex).getPlayerName() + "!");
                 return newActiveIndex;
@@ -334,6 +355,7 @@ public class Game { //Where the main game happens
             else if (card.getCardType().equals("Reverse") && input[0].equals(card.getColor()) && input[1].equals("Reverse") && isCardValidNonNormal(input, cardPile)) {
                 String oldActiveIndex = playerList.get(activeIndex).getPlayerName();
                 activeIndex = reverseAtIndex(playerList, activeIndex);
+                response = colorEmojiCards.get(card.getColor()) + response;
                 return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, oldActiveIndex, saidUno, deck);
             }
         }
@@ -345,62 +367,86 @@ public class Game { //Where the main game happens
             System.out.println("");
             System.out.println("Okidoki drawing a card for you...");
             drawCard(deck, playerList.get(activeIndex).getPlayerCards(), 1, playerList.get(activeIndex).getPlayerName());
+            System.out.print("The card you have drawn is: ");
+            getCurrentCard(userCards, userCards.size()-1, colorEmojiCards);
+            System.out.println("\n");
             return nextTurn(playerList, activeIndex, 1);
         } else {
-            return placeCardHuman(playerList.get(activeIndex).getPlayerCards(), deck, cardPile, playerList, possibleColors, activeIndex, true); // when I call this, and somehow make saidUno auto true?;
+            return placeCardHuman(playerList.get(activeIndex).getPlayerCards(), deck, cardPile, playerList, possibleColors, activeIndex, true, colorEmojiCards); // when I call this, and somehow make saidUno auto true?;
         }
     }
 
     //Function: If active player is robot, automate card choice or draw.
-    public static int placeCardRobot(ArrayList<Card> userCards, ArrayList<Card> deck, ArrayList<Card> cardPile, ArrayList<Player> playerList, String[] possibleColors, int activeIndex) {
+public static int placeCardRobot(ArrayList<Card> userCards, ArrayList<Card> deck, ArrayList<Card> cardPile, ArrayList<Player> playerList, String[] possibleColors, int activeIndex, HashMap <String, String> colorEmojiCards) {
     Card deckCard = cardPile.get(0); // Current card in the pile
     String response = "";
     boolean saidUno = false;
 
+    // Check if the robot should declare UNO
     if (playerList.get(activeIndex).getPlayerCards().size() == 2){
         System.out.println(playerList.get(activeIndex).getPlayerName() + " ACTIVATED UNO!!");
         saidUno = true;
     }
 
+    // Prioritize playable cards with the following order: +2, Skip, Reverse, Wild, Wild +4, Normal
     for (int i = 0; i < userCards.size(); i++) {
         Card card = userCards.get(i);
 
-        if (card.getCardType().equals("Normal") && (card.getColor().equals(deckCard.getColor()) || card.getCardValue() == deckCard.getCardValue())) {
-            response = card.getColor() + " " + card.getCardValue();
-            return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
-        } else if (card.getCardType().equals("Wild") && card.getColor().equals("Black")) {
-            card.wildCardRobot(possibleColors);
-            response = card.getCardType() + " " + card.getColor();
-            return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
-        } else if (card.getCardType().equals("Wild +4") && card.getColor().equals("Black")) {
-            card.wildCardRobot(possibleColors);
-            response = card.getCardType() + " " + card.getColor();
-            int victimIndex = nextTurn(playerList, activeIndex, 1);
-            int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
-            drawCard(deck, playerList.get(victimIndex).getPlayerCards(), 4, playerList.get(victimIndex).getPlayerName());
-            return newActiveIndex;
-        } else if (card.getCardType().equals("Normal +2") && (card.getCardType().equals(deckCard.getCardType()) || card.getColor().equals(deckCard.getColor()))){
-            response = card.getColor() + " +2";
+        // +2 Cards Robot
+        if (card.getCardType().equals("Normal +2") && (card.getColor().equals(deckCard.getColor()) || card.getCardType().equals(deckCard.getCardType()))){
+            response = colorEmojiCards.get(card.getColor()) + card.getColor() + " +2";
             int victimIndex = nextTurn(playerList, activeIndex, 1);
             int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
             drawCard(deck, playerList.get(victimIndex).getPlayerCards(), 2, playerList.get(victimIndex).getPlayerName());
             return newActiveIndex;
-        } else if (card.getCardType().equals("Skip") && (card.getCardType().equals(deckCard.getCardType()) || card.getColor().equals(deckCard.getColor()))) {
-            response = card.getColor() + " " + card.getCardType();
+        }
+
+        // Skip Cards Robot
+        else if (card.getCardType().equals("Skip") && (card.getColor().equals(deckCard.getColor()) || card.getCardType().equals(deckCard.getCardType()))) {
+            response = colorEmojiCards.get(card.getColor()) + card.getColor() + " " + card.getCardType();
             int victimIndex = nextTurn(playerList, activeIndex, 1);
             int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
             System.out.println("O NAH, " + playerList.get(activeIndex).getPlayerName() + " skipped " + playerList.get(victimIndex).getPlayerName() + "!");
             return newActiveIndex;
-        } else if (card.getCardType().equals("Reverse") && (card.getCardType().equals(deckCard.getCardType()) || card.getColor().equals(deckCard.getColor()))) {
+        }
+
+        // Reverse Cards
+        else if (card.getCardType().equals("Reverse") && (card.getColor().equals(deckCard.getColor()) || card.getCardType().equals(deckCard.getCardType()))) {
             String oldActiveIndex = playerList.get(activeIndex).getPlayerName();
             int newActiveIndex = reverseAtIndex(playerList, activeIndex);
-            response = card.getColor() + " " + card.getCardType();
+            response = colorEmojiCards.get(card.getColor()) + card.getColor() + " " + card.getCardType();
             return placeCard(userCards, cardPile, playerList, newActiveIndex, card, 1, response, oldActiveIndex, saidUno, deck);
         }
+
+        // Wild +4 Cards
+        else if (card.getCardType().equals("Wild +4") && card.getColor().equals("Black")) {
+            card.wildCardRobot(possibleColors);
+            response = colorEmojiCards.get(card.getColor()) + card.getCardType() + " " + card.getColor();
+            int victimIndex = nextTurn(playerList, activeIndex, 1);
+            int newActiveIndex = placeCard(userCards, cardPile, playerList, activeIndex, card, 2, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
+            drawCard(deck, playerList.get(victimIndex).getPlayerCards(), 4, playerList.get(victimIndex).getPlayerName());
+            return newActiveIndex;
+        }
+
+        // Wild Cards
+        else if (card.getCardType().equals("Wild") && card.getColor().equals("Black")) {
+            card.wildCardRobot(possibleColors);
+            response = colorEmojiCards.get(card.getColor()) + card.getCardType() + " " + card.getColor();
+            return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
+        }
+
+        // Check for Normal cards last
+        else if (card.getCardType().equals("Normal") && (card.getColor().equals(deckCard.getColor()) || card.getCardValue() == deckCard.getCardValue())) {
+            response = colorEmojiCards.get(card.getColor()) + card.getColor() + " " + card.getCardValue();
+            return placeCard(userCards, cardPile, playerList, activeIndex, card, 1, response, playerList.get(activeIndex).getPlayerName(), saidUno, deck);
+        }
     }
-        drawCard(deck, userCards, 1, playerList.get(activeIndex).getPlayerName());
-        return nextTurn(playerList, activeIndex, 1);
-    }
+
+    // If no card can be played, draw a card
+    drawCard(deck, userCards, 1, playerList.get(activeIndex).getPlayerName());
+    return nextTurn(playerList, activeIndex, 1);
+}
+
 
     //Function: Places a card down and moves to next turn. (Uno considered too)
     public static int placeCard(ArrayList<Card> userCards, ArrayList<Card> cardPile, ArrayList<Player> playerList, int activeIndex, Card card, int turnIncrement, String response, String userName, boolean saidUno, ArrayList<Card> deck) {
