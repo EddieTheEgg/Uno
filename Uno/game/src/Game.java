@@ -376,6 +376,9 @@ public class Game { //Where the main game happens
         }
     }
 
+
+
+    
     //Function: If active player is robot, automate card choice or draw.
 public static int placeCardRobot(ArrayList<Card> userCards, ArrayList<Card> deck, ArrayList<Card> cardPile, ArrayList<Player> playerList, String[] possibleColors, int activeIndex, HashMap <String, String> colorEmojiCards) {
     Card deckCard = cardPile.get(0); // Current card in the pile
