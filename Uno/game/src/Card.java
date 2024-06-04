@@ -70,11 +70,24 @@ public class Card {
     }
 
     //Sets the color of the card from Black to user choice
-    public void wildCardUser (String [] possibleColors){
-        //Assuming the user inputs the correct color. Maybe do a check if statement if repsonse valid later.
+    public void wildCardUser (String[] possibleColors){
+        // Assuming the user inputs the correct color. Maybe do a check if statement if response valid later.
         System.out.println("What color would you like to choose? Red, Yellow, Green, or Blue");
-        String colorResponse = reader.nextLine();
-        color = colorResponse;
+        String colorResponse = reader.nextLine().trim(); // Trim the input to remove leading/trailing whitespace
+        boolean isValidColor = false;
+        
+        for (String possibleColor : possibleColors) {
+            if (colorResponse.equalsIgnoreCase(possibleColor)) {
+                color = possibleColor; // Case insensitive comparison
+                isValidColor = true;
+                break;
+            }
+        }
+        
+        if (!isValidColor) { //or isValidColor = false
+            System.out.println("That is not a color in UNO or you made a typo! Please try again.");
+            wildCardUser(possibleColors); // Recursively call the method again if the input is invalid
+        }
     }
 
     
