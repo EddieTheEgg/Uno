@@ -57,3 +57,12 @@ The game follows standard UNO rules:
 - **Wild +4 Cards**: Change color and force next player to draw 4 cards
 
 Enjoy playing UNO! 🎉
+
+## What I Learned
+
+### Java Programming Concepts
+- **Object-Oriented Programming**: Created classes for `Card`, `Deck`, `Player`, and `Game`
+- **Collections Framework**: Used `ArrayList` for managing cards and players
+- **Exception Handling**: Implemented try-catch blocks for user input validation
+- **Scanner Class**: Used for reading user input from the terminal
+- **HashMap**: Created color-to-emoji mappings for better card visualization
