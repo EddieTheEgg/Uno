@@ -8,7 +8,7 @@ A Java implementation of the classic UNO card game with interactive terminal gam
 - 🤖 Play against computer opponents (bots)
 - 🃏 Full UNO card set with all special cards
 - 🎨 Color-coded cards with emojis for better visualization
-- ⚡ Smart AI opponents with strategic card play
+- ⚡ Smart CPU opponents with strategic card play
 
 ## Game Rules
 
@@ -36,44 +36,16 @@ The game follows standard UNO rules:
    ./run.sh
    ```
 
-### Manual Compilation
-
-If you prefer to compile manually:
-
-```bash
-# Create build directory
-mkdir -p build/classes
-
-# Compile the Java files
-javac -d build/classes src/*.java
-
-# Run the game
-java -cp build/classes Game
-```
-
 ## How to Play
 
 1. When prompted, enter the number of computer players you want to play against
 2. Enter your name
-3. The game will display your cards and the current card in play
-4. Type the exact name of the card you want to play (e.g., "Red 5", "Blue Skip", "Wild Red")
-5. Type "Draw" to draw a card if you can't play
-6. Type "Uno" when you have 2 cards left to declare UNO
-7. Press Enter to continue between turns
-
-## Project Structure
-
-```
-├── src/                      # Source code
-│   ├── Game.java             # Main game logic
-│   ├── Card.java             # Card class
-│   ├── Deck.java             # Deck management
-│   └── Player.java           # Player class
-├── build/                    # Compiled classes (created after build)
-├── build.sh                  # Build script
-├── run.sh                    # Run script
-└── README.md                 # This file
-```
+3. When choosing amount of bots, try to choose between 1-4 players otherwise gameplay will error when there are not enough cards to distirbute in the beginning
+4. The game will display your cards and the current card in play
+5. Type the exact name of the card you want to play (e.g., "Red 5", "Blue Skip", "Wild Red")
+6. Type "Draw" to draw a card if you can't play
+7. Type "Uno" when you have 2 cards left to declare UNO
+8. Press Enter to continue between turns
 
 ## Card Types
 
