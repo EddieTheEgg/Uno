@@ -11,4 +11,4 @@ fi
 
 # Run the game
 echo "🎮 Launching UNO Game..."
-java -cp build/classes com.uno.Game
+java -cp build/classes Game

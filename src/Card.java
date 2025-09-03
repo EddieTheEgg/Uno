@@ -1,5 +1,3 @@
-package com.uno;
-
 import java.util.*;
 
 public class Card {

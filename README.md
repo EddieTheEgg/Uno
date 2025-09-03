@@ -45,10 +45,10 @@ If you prefer to compile manually:
 mkdir -p build/classes
 
 # Compile the Java files
-javac -d build/classes src/main/java/com/uno/*.java
+javac -d build/classes src/*.java
 
 # Run the game
-java -cp build/classes com.uno.Game
+java -cp build/classes Game
 ```
 
 ## How to Play
@@ -64,7 +64,7 @@ java -cp build/classes com.uno.Game
 ## Project Structure
 
 ```
-├── src/main/java/com/uno/    # Source code
+├── src/                      # Source code
 │   ├── Game.java             # Main game logic
 │   ├── Card.java             # Card class
 │   ├── Deck.java             # Deck management

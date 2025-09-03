@@ -1,5 +1,3 @@
-package com.uno;
-
 import java.util.*; 
 public class Game { //Where the main game happens 
     static Scanner reader = new Scanner(System.in);

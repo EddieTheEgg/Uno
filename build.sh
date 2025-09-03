@@ -8,7 +8,7 @@ mkdir -p build/classes
 
 # Compile Java files
 echo "Compiling Java source files..."
-javac -d build/classes src/main/java/com/uno/*.java
+javac -d build/classes src/*.java
 
 if [ $? -eq 0 ]; then
     echo "✅ Compilation successful!"
